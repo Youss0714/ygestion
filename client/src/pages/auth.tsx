@@ -107,11 +107,7 @@ export default function AuthPage() {
         title: "Connexion réussie !",
         description: `Bienvenue ${user.firstName} !`,
       });
-<<<<<<< HEAD
-
-=======
       
->>>>>>> 725ce7f45cc8fd5cada61f5c9eab1f56105ca49c
       // Attendre que les données utilisateur soient mises à jour avant la redirection
       await queryClient.refetchQueries({ queryKey: ["/api/user"] });
       setLocation("/");
