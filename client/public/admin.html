@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YGestion - Administration des licences</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .login-container {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            margin: 50px auto;
+            text-align: center;
+        }
+        
+        .main-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            margin: 0 auto;
+            max-width: 1200px;
+        }
+        
+        .logo {
+            background: #764ba2;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        
+        .header {
+            background: #764ba2;
+            color: white;
+            padding: 30px;
+            border-radius: 12px 12px 0 0;
+        }
+        
+        .header h1 {
+            color: white;
+            margin: 0;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e1e1;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="text"]:focus, input[type="password"]:focus {
+            outline: none;
+            border-color: #764ba2;
+        }
+        
+        .btn {
+            background: #764ba2;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-right: 10px;
+        }
+        
+        .btn:hover {
+            background: #6a4190;
+        }
+        
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .btn-primary {
+            background: #007bff;
+        }
+        
+        .btn-primary:hover {
+            background: #0056b3;
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+        }
+        
+        .btn-danger:hover {
+            background: #c82333;
+        }
+        
+        .btn-generate {
+            background: #28a745;
+        }
+        
+        .btn-generate:hover {
+            background: #218838;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #495057;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+        
+        .badge-success {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .badge-warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .badge-danger {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .code {
+            font-family: 'Courier New', monospace;
+            background: #f8f9fa;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .alert {
+            padding: 12px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert-danger {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .stat-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Form -->
+    <div id="login-form" class="login-container">
+        <div class="logo">👑</div>
+        <h1>Administration YGestion</h1>
+        <p class="subtitle">Accès réservé à l'administrateur</p>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="adminToken">Token d'administration</label>
+                <input type="password" id="adminToken" name="adminToken" 
+                       placeholder="Entrez votre token admin" required>
+            </div>
+            
+            <div id="login-alert"></div>
+            
+            <button type="submit" class="btn" style="width: 100%;">
+                Se connecter
+            </button>
+        </form>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="dashboard" class="main-container hidden">
+        <div class="header">
+            <h1>Administration des Licences YGestion</h1>
+            <p>Gestion des clés d'activation pour les clients</p>
+        </div>
+        
+        <div class="content">
+            <!-- Action Buttons -->
+            <div style="margin-bottom: 30px;">
+                <button class="btn btn-primary" onclick="showCreateForm()">
+                    + Nouvelle licence
+                </button>
+                <button class="btn" onclick="refreshLicenses()">
+                    🔄 Actualiser
+                </button>
+            </div>
+            
+            <!-- Create License Form -->
+            <div id="create-form" class="hidden" style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                <h3 style="margin-bottom: 15px;">Créer une nouvelle licence</h3>
+                
+                <div class="form-group">
+                    <label for="newKey">Clé d'activation</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" id="newKey" style="flex: 1; font-family: monospace;">
+                        <button type="button" class="btn btn-generate" onclick="generateKey()">
+                            Générer
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="newClientName">Nom du client</label>
+                    <input type="text" id="newClientName" placeholder="Nom du client">
+                </div>
+                
+                <div id="create-alert"></div>
+                
+                <button class="btn btn-primary" onclick="createLicense()">
+                    Créer la licence
+                </button>
+                <button class="btn" onclick="hideCreateForm()">
+                    Annuler
+                </button>
+            </div>
+            
+            <!-- Stats -->
+            <div id="stats" class="stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="total-licenses">-</div>
+                    <div class="stat-label">Total licences</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="active-licenses" style="color: #28a745;">-</div>
+                    <div class="stat-label">Actives</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="revoked-licenses" style="color: #dc3545;">-</div>
+                    <div class="stat-label">Révoquées</div>
+                </div>
+            </div>
+            
+            <!-- Licenses Table -->
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Clé</th>
+                            <th>Client</th>
+                            <th>Statut</th>
+                            <th>Activée le</th>
+                            <th>Créée le</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="licenses-table">
+                        <tr>
+                            <td colspan="6" style="text-align: center; padding: 40px; color: #666;">
+                                Chargement...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let adminToken = '';
+        let licenses = [];
+
+        // Login functionality
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            adminToken = document.getElementById('adminToken').value;
+            const alertContainer = document.getElementById('login-alert');
+            
+            try {
+                const response = await fetch('/api/admin/licenses', {
+                    headers: {
+                        'x-admin-token': adminToken
+                    }
+                });
+                
+                if (response.ok) {
+                    document.getElementById('login-form').classList.add('hidden');
+                    document.getElementById('dashboard').classList.remove('hidden');
+                    loadLicenses();
+                } else {
+                    alertContainer.innerHTML = `
+                        <div class="alert alert-danger">
+                            Token d'administration invalide
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                alertContainer.innerHTML = `
+                    <div class="alert alert-danger">
+                        Erreur de connexion au serveur
+                    </div>
+                `;
+            }
+        });
+
+        // Load licenses
+        async function loadLicenses() {
+            try {
+                const response = await fetch('/api/admin/licenses', {
+                    headers: {
+                        'x-admin-token': adminToken
+                    }
+                });
+                
+                if (response.ok) {
+                    licenses = await response.json();
+                    displayLicenses();
+                    updateStats();
+                } else {
+                    console.error('Erreur lors du chargement des licences');
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+            }
+        }
+
+        // Display licenses in table
+        function displayLicenses() {
+            const tbody = document.getElementById('licenses-table');
+            
+            if (licenses.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 40px; color: #666;">
+                            Aucune licence créée pour le moment
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            tbody.innerHTML = licenses.map(license => {
+                const status = getStatusBadge(license);
+                const activatedDate = license.activatedAt ? 
+                    new Date(license.activatedAt).toLocaleDateString('fr-FR') : '—';
+                const createdDate = license.createdAt ? 
+                    new Date(license.createdAt).toLocaleDateString('fr-FR') : '—';
+                
+                return `
+                    <tr>
+                        <td><span class="code">${license.key}</span></td>
+                        <td>${license.clientName || 'Non spécifié'}</td>
+                        <td>${status}</td>
+                        <td>${activatedDate}</td>
+                        <td>${createdDate}</td>
+                        <td>
+                            ${license.activated && !license.revokedAt ? 
+                                `<button class="btn btn-danger" onclick="revokeLicense('${license.key}')">
+                                    Révoquer
+                                </button>` : 
+                                ''
+                            }
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Get status badge
+        function getStatusBadge(license) {
+            if (license.revokedAt) {
+                return '<span class="badge badge-danger">Révoquée</span>';
+            }
+            if (license.activated) {
+                return '<span class="badge badge-success">Activée</span>';
+            }
+            return '<span class="badge badge-warning">En attente</span>';
+        }
+
+        // Update stats
+        function updateStats() {
+            document.getElementById('total-licenses').textContent = licenses.length;
+            document.getElementById('active-licenses').textContent = 
+                licenses.filter(l => l.activated && !l.revokedAt).length;
+            document.getElementById('revoked-licenses').textContent = 
+                licenses.filter(l => l.revokedAt).length;
+        }
+
+        // Show/hide create form
+        function showCreateForm() {
+            document.getElementById('create-form').classList.remove('hidden');
+        }
+
+        function hideCreateForm() {
+            document.getElementById('create-form').classList.add('hidden');
+            document.getElementById('create-alert').innerHTML = '';
+            document.getElementById('newKey').value = '';
+            document.getElementById('newClientName').value = '';
+        }
+
+        // Generate license key
+        function generateKey() {
+            const year = new Date().getFullYear();
+            const random = Math.random().toString(36).substr(2, 3).toUpperCase();
+            const sequence = String(Math.floor(Math.random() * 999) + 1).padStart(3, '0');
+            document.getElementById('newKey').value = `WENIBAC-${year}-${sequence}-${random}`;
+        }
+
+        // Create license
+        async function createLicense() {
+            const key = document.getElementById('newKey').value.trim();
+            const clientName = document.getElementById('newClientName').value.trim();
+            const alertContainer = document.getElementById('create-alert');
+            
+            if (!key) {
+                alertContainer.innerHTML = `
+                    <div class="alert alert-danger">
+                        La clé d'activation est requise
+                    </div>
+                `;
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/admin/licenses', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-admin-token': adminToken
+                    },
+                    body: JSON.stringify({
+                        key,
+                        clientName,
+                        createdBy: 'Youssouphafils'
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    alertContainer.innerHTML = `
+                        <div class="alert alert-success">
+                            Licence créée avec succès !
+                        </div>
+                    `;
+                    loadLicenses();
+                    setTimeout(() => {
+                        hideCreateForm();
+                    }, 2000);
+                } else {
+                    alertContainer.innerHTML = `
+                        <div class="alert alert-danger">
+                            ${result.message || 'Erreur lors de la création'}
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                alertContainer.innerHTML = `
+                    <div class="alert alert-danger">
+                        Erreur de connexion au serveur
+                    </div>
+                `;
+            }
+        }
+
+        // Revoke license
+        async function revokeLicense(key) {
+            if (!confirm(`Êtes-vous sûr de vouloir révoquer la licence ${key} ?`)) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/api/admin/licenses/${key}/revoke`, {
+                    method: 'PATCH',
+                    headers: {
+                        'x-admin-token': adminToken
+                    }
+                });
+                
+                if (response.ok) {
+                    loadLicenses();
+                } else {
+                    alert('Erreur lors de la révocation de la licence');
+                }
+            } catch (error) {
+                alert('Erreur de connexion au serveur');
+            }
+        }
+
+        // Refresh licenses
+        function refreshLicenses() {
+            loadLicenses();
+        }
+    </script>
+</body>
+</html>

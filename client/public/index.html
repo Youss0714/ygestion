@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YGestion - Activation de licence</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        
+        .logo {
+            background: #667eea;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e1e1;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .license-key {
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+        
+        .btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background: #5a6fd8;
+        }
+        
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .alert {
+            padding: 12px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert-danger {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .success-icon {
+            background: #28a745;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 36px;
+        }
+        
+        .help-text {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .footer {
+            margin-top: 30px;
+            font-size: 12px;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="activation-form">
+            <div class="logo">Y</div>
+            <h1>YGestion</h1>
+            <p class="subtitle">Activation de licence</p>
+            
+            <form id="licenseForm">
+                <div class="form-group">
+                    <label for="key">Clé d'activation *</label>
+                    <input type="text" id="key" name="key" class="license-key" 
+                           placeholder="WENIBAC-2025-001" required>
+                    <div class="help-text">Entrez votre clé d'activation fournie par l'administrateur</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="clientName">Nom du client</label>
+                    <input type="text" id="clientName" name="clientName" 
+                           placeholder="Votre nom ou nom de l'entreprise">
+                </div>
+                
+                <div class="form-group">
+                    <label for="deviceId">ID de l'appareil (optionnel)</label>
+                    <input type="text" id="deviceId" name="deviceId" 
+                           placeholder="ABC123XYZ" class="license-key">
+                    <div class="help-text">Laissez vide pour générer automatiquement</div>
+                </div>
+                
+                <div id="alert-container"></div>
+                
+                <button type="submit" class="btn" id="submitBtn">
+                    Activer la licence
+                </button>
+            </form>
+        </div>
+        
+        <div id="success-message" style="display: none;">
+            <div class="success-icon">✓</div>
+            <h2 style="color: #28a745; margin-bottom: 15px;">Licence activée avec succès !</h2>
+            <p style="margin-bottom: 20px;">Votre licence a été activée. Vous pouvez maintenant utiliser YGestion.</p>
+            <button class="btn" onclick="redirectToApp()">
+                Accéder à l'application
+            </button>
+        </div>
+        
+        <p class="footer">
+            Besoin d'une clé d'activation ? Contactez votre administrateur.
+        </p>
+    </div>
+
+    <script>
+        document.getElementById('licenseForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const alertContainer = document.getElementById('alert-container');
+            
+            // Disable button and show loading
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Activation en cours...';
+            alertContainer.innerHTML = '';
+            
+            // Get form data
+            const formData = new FormData(e.target);
+            const data = {
+                key: formData.get('key'),
+                clientName: formData.get('clientName'),
+                deviceId: formData.get('deviceId') || `device-${Date.now()}`
+            };
+            
+            try {
+                const response = await fetch('/api/activate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    // Success
+                    document.getElementById('activation-form').style.display = 'none';
+                    document.getElementById('success-message').style.display = 'block';
+                } else {
+                    // Error
+                    alertContainer.innerHTML = `
+                        <div class="alert alert-danger">
+                            ${result.message || 'Erreur lors de l\'activation'}
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                alertContainer.innerHTML = `
+                    <div class="alert alert-danger">
+                        Erreur de connexion au serveur. Veuillez réessayer.
+                    </div>
+                `;
+            } finally {
+                // Re-enable button
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Activer la licence';
+            }
+        });
+        
+        function redirectToApp() {
+            window.location.href = '/';
+        }
+    </script>
+</body>
+</html>

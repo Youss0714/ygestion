@@ -1,0 +1,19 @@
+node_modules
+dist
+.DS_Store
+*.tar.gz
+ .local/
+ # Ignorer les fichiers d'état Replit
+.local/state/replit/agent/*.bin
+
+# Nettoyage Replit
+cookies.txt
+replit.md
+components.json
+attached_assets/
+.env
+.env.production
+.vscode
+.env.example
+build-exe-guide.md
+GUIDE-BUILD-ELECTRON.md

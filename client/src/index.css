@@ -1,0 +1,397 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: hsl(0, 0%, 100%);
+  --foreground: hsl(20, 14.3%, 4.1%);
+  --muted: hsl(60, 4.8%, 95.9%);
+  --muted-foreground: hsl(25, 5.3%, 44.7%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(20, 14.3%, 4.1%);
+  --card: hsl(0, 0%, 100%);
+  --card-foreground: hsl(20, 14.3%, 4.1%);
+  --border: hsl(20, 5.9%, 90%);
+  --input: hsl(20, 5.9%, 90%);
+  --primary: hsl(221, 83%, 53%);
+  --primary-foreground: hsl(210, 40%, 98%);
+  --secondary: hsl(60, 4.8%, 95.9%);
+  --secondary-foreground: hsl(24, 9.8%, 10%);
+  --accent: hsl(60, 4.8%, 95.9%);
+  --accent-foreground: hsl(24, 9.8%, 10%);
+  --destructive: hsl(0, 84.2%, 60.2%);
+  --destructive-foreground: hsl(60, 9.1%, 97.8%);
+  --ring: hsl(20, 14.3%, 4.1%);
+  --radius: 0.5rem;
+  
+  /* Beautiful gradient backgrounds */
+  --app-background: linear-gradient(135deg, hsl(210, 60%, 98%) 0%, hsl(195, 100%, 95%) 25%, hsl(180, 100%, 96%) 50%, hsl(165, 60%, 97%) 75%, hsl(150, 40%, 98%) 100%);
+  --card-background: hsla(0, 0%, 100%, 0.85);
+  --sidebar-background: hsla(210, 60%, 98%, 0.95);
+}
+
+.dark {
+  --background: hsl(240, 10%, 3.9%);
+  --foreground: hsl(0, 0%, 98%);
+  --muted: hsl(240, 3.7%, 15.9%);
+  --muted-foreground: hsl(240, 5%, 64.9%);
+  --popover: hsl(240, 10%, 3.9%);
+  --popover-foreground: hsl(0, 0%, 98%);
+  --card: hsl(240, 10%, 3.9%);
+  --card-foreground: hsl(0, 0%, 98%);
+  --border: hsl(240, 3.7%, 15.9%);
+  --input: hsl(240, 3.7%, 15.9%);
+  --primary: hsl(221, 83%, 53%);
+  --primary-foreground: hsl(210, 40%, 98%);
+  --secondary: hsl(240, 3.7%, 15.9%);
+  --secondary-foreground: hsl(0, 0%, 98%);
+  --accent: hsl(240, 3.7%, 15.9%);
+  --accent-foreground: hsl(0, 0%, 98%);
+  --destructive: hsl(0, 62.8%, 30.6%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --ring: hsl(240, 4.9%, 83.9%);
+  --radius: 0.5rem;
+  
+  /* Beautiful dark gradient backgrounds */
+  --app-background: linear-gradient(135deg, hsl(240, 15%, 8%) 0%, hsl(235, 20%, 10%) 25%, hsl(230, 25%, 12%) 50%, hsl(225, 20%, 10%) 75%, hsl(240, 15%, 8%) 100%);
+  --card-background: hsla(240, 10%, 8%, 0.85);
+  --sidebar-background: hsla(240, 15%, 8%, 0.95);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased text-foreground;
+    background: var(--app-background);
+    background-attachment: fixed;
+    min-height: 100vh;
+  }
+  
+  /* Enhanced card styling with backdrop blur */
+  .card {
+    background: var(--card-background);
+    backdrop-filter: blur(10px);
+    border: 1px solid hsla(0, 0%, 100%, 0.2);
+    box-shadow: 0 8px 32px hsla(0, 0%, 0%, 0.1);
+  }
+  
+  .dark .card {
+    background: var(--card-background);
+    backdrop-filter: blur(10px);
+    border: 1px solid hsla(255, 255%, 255%, 0.1);
+    box-shadow: 0 8px 32px hsla(0, 0%, 0%, 0.3);
+  }
+  
+  /* Beautiful sidebar with glassmorphism effect */
+  .sidebar-glass {
+    background: var(--sidebar-background);
+    backdrop-filter: blur(15px);
+    border-right: 1px solid hsla(0, 0%, 100%, 0.2);
+    box-shadow: 4px 0 24px hsla(0, 0%, 0%, 0.1);
+  }
+  
+  .dark .sidebar-glass {
+    background: var(--sidebar-background);
+    backdrop-filter: blur(15px);
+    border-right: 1px solid hsla(255, 255%, 255%, 0.1);
+    box-shadow: 4px 0 24px hsla(0, 0%, 0%, 0.4);
+  }
+  
+  /* Content area glass effect */
+  .content-glass {
+    background: hsla(0, 0%, 100%, 0.1);
+    backdrop-filter: blur(5px);
+  }
+  
+  .dark .content-glass {
+    background: hsla(0, 0%, 0%, 0.1);
+    backdrop-filter: blur(5px);
+  }
+}
+
+/* Custom styles for the application */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Print styles - Only show the invoice content when printing */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  
+  .invoice-content, .invoice-content * {
+    visibility: visible !important;
+  }
+  
+  .invoice-content div,
+  .invoice-content p,
+  .invoice-content h1,
+  .invoice-content h2,
+  .invoice-content h3,
+  .invoice-content span,
+  .invoice-content table,
+  .invoice-content thead,
+  .invoice-content tbody,
+  .invoice-content tr,
+  .invoice-content th,
+  .invoice-content td {
+    display: revert !important;
+    visibility: visible !important;
+  }
+  
+  .invoice-content {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    padding: 20px !important;
+    margin: 0;
+    background: white !important;
+    color: black !important;
+    font-family: Arial, sans-serif !important;
+    line-height: 1.6 !important;
+  }
+  
+  /* Hide all elements that should not appear in print */
+  .print\:hidden,
+  .sidebar,
+  .navbar,
+  .header,
+  nav,
+  header,
+  .action-buttons,
+  button,
+  .no-print {
+    display: none !important;
+    visibility: hidden !important;
+  }
+  
+  /* Ensure the invoice content is properly styled for print */
+  .invoice-content .card {
+    box-shadow: none !important;
+    border: none !important;
+    background: white !important;
+  }
+  
+  /* Force display of grid elements */
+  .invoice-content .grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 40px !important;
+    margin-bottom: 40px !important;
+  }
+  
+  .invoice-content .grid-cols-1 {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .invoice-content .md\:grid-cols-2 {
+    grid-template-columns: 1fr 1fr !important;
+  }
+  
+  /* Force display of flex elements */
+  .invoice-content .flex {
+    display: flex !important;
+  }
+  
+  .invoice-content .justify-between {
+    justify-content: space-between !important;
+  }
+  
+  .invoice-content .justify-end {
+    justify-content: flex-end !important;
+  }
+  
+  .invoice-content .items-start {
+    align-items: flex-start !important;
+  }
+  
+  /* Force display of table elements */
+  .invoice-content table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    margin-bottom: 32px !important;
+    display: table !important;
+  }
+  
+  .invoice-content thead, .invoice-content tbody {
+    display: table-header-group !important;
+  }
+  
+  .invoice-content tbody {
+    display: table-row-group !important;
+  }
+  
+  .invoice-content tr {
+    display: table-row !important;
+  }
+  
+  .invoice-content th, .invoice-content td {
+    display: table-cell !important;
+    padding: 12px !important;
+    border-bottom: 1px solid #e5e7eb !important;
+  }
+  
+  .invoice-content th {
+    background-color: #f9fafb !important;
+    font-weight: bold !important;
+    text-align: left !important;
+  }
+  
+  .invoice-content .text-right {
+    text-align: right !important;
+  }
+  
+  /* Typography styles */
+  .invoice-content h1 {
+    font-size: 36px !important;
+    font-weight: bold !important;
+    margin: 0 0 8px 0 !important;
+  }
+  
+  .invoice-content h3 {
+    font-weight: bold !important;
+    margin-bottom: 12px !important;
+  }
+  
+  .invoice-content p {
+    margin: 4px 0 !important;
+  }
+  
+  /* Spacing utilities */
+  .invoice-content .mb-2 { margin-bottom: 8px !important; }
+  .invoice-content .mb-3 { margin-bottom: 12px !important; }
+  .invoice-content .mb-6 { margin-bottom: 24px !important; }
+  .invoice-content .mb-8 { margin-bottom: 32px !important; }
+  .invoice-content .space-y-2 > * + * { margin-top: 8px !important; }
+  .invoice-content .gap-8 { gap: 32px !important; }
+  .invoice-content .space-x-2 > * + * { margin-left: 8px !important; }
+  
+  /* Make text darker for better print quality */
+  .invoice-content {
+    color: #000 !important;
+  }
+  
+  .invoice-content .text-gray-600 {
+    color: #666 !important;
+  }
+  
+  .invoice-content .text-gray-700 {
+    color: #333 !important;
+  }
+  
+  .invoice-content .text-primary {
+    color: #3b82f6 !important;
+  }
+  
+  /* Ensure all content displays */
+  .invoice-content .whitespace-pre-line {
+    white-space: pre-line !important;
+  }
+  
+  .invoice-content .font-medium {
+    font-weight: 500 !important;
+  }
+  
+  .invoice-content .font-semibold {
+    font-weight: 600 !important;
+  }
+  
+  .invoice-content .font-bold {
+    font-weight: bold !important;
+  }
+  
+  /* Ensure border styles */
+  .invoice-content .border-t {
+    border-top: 2px solid #374151 !important;
+  }
+  
+  .invoice-content .pt-2 {
+    padding-top: 8px !important;
+  }
+  
+  .invoice-content .w-full {
+    width: 100% !important;
+  }
+  
+  /* Color overrides for print */
+  .invoice-content .text-yellow-600 {
+    color: #d97706 !important;
+  }
+  
+  .invoice-content .text-green-600 {
+    color: #059669 !important;
+  }
+  
+  .invoice-content .text-red-600 {
+    color: #dc2626 !important;
+  }
+  
+  /* Ensure proper page margins for printing */
+  @page {
+    margin: 1cm;
+  }
+
+  /* Show dialog content when printing */
+  [role="dialog"] {
+    position: static !important;
+    transform: none !important;
+    max-width: none !important;
+    max-height: none !important;
+    overflow: visible !important;
+    background: white !important;
+    box-shadow: none !important;
+    border: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Hide dialog overlay and non-essential elements when printing */
+  [data-radix-popper-content-wrapper],
+  [data-overlay-container],
+  .fixed.inset-0,
+  [role="dialog"] > div:first-child {
+    position: static !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+  }
+
+  /* Ensure dialog header is hidden during print */
+  [role="dialog"] h2[id*="dialog-title"] {
+    display: none !important;
+  }
+}
+
+/* Loading screen animations */
+@keyframes fade-in {
+  from { 
+    opacity: 0; 
+    transform: translateY(20px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.8s ease-out;
+}
+
+.animate-fade-in-delay {
+  animation: fade-in 0.8s ease-out 0.3s both;
+}

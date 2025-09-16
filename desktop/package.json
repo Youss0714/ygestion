@@ -1,0 +1,112 @@
+{
+  "name": "ygestion-desktop",
+  "version": "1.0.0",
+  "description": "YGestion Desktop Application - Gestion Commerciale et Comptable",
+  "main": "./dist/main.js",
+  "type": "module",
+  "author": "YGestion Team",
+  "license": "MIT",
+  "dependencies": {
+    "connect-pg-simple": "^10.0.0",
+    "dotenv": "^17.2.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "electron": "^37.3.1",
+    "electron-builder": "^25.1.8",
+    "typescript": "^5.9.2"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.electron.json",
+    "start": "npm run build && electron ./dist/main.js",
+    "dev": "npm run build && electron ./dist/main.js --dev",
+    "dist": "npm run build && electron-builder",
+    "dist:windows": "npm run build && electron-builder --windows --x64",
+    "dist:portable": "npm run build && electron-builder --windows portable",
+    "dist:dir": "npm run build && electron-builder --dir"
+  },
+  "build": {
+    "appId": "com.ygestion.desktop",
+    "productName": "YGestion",
+    "copyright": "Copyright © 2025 YGestion Team",
+    "directories": {
+      "output": "build",
+      "buildResources": "assets"
+    },
+    "files": [
+      "dist/**/*",
+      "!dist/**/*.map",
+      "../.env"
+    ],
+    "extraResources": [
+      {
+        "from": "../dist/public",
+        "to": "backend/public",
+        "filter": [
+          "**/*",
+          "!**/*.map"
+        ]
+      },
+      {
+        "from": "../dist/index.js",
+        "to": "backend/index.js"
+      }
+    ],
+    "compression": "maximum",
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "requestedExecutionLevel": "asInvoker",
+      "verifyUpdateCodeSignature": false
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "installerIcon": "assets/icon.ico",
+      "uninstallerIcon": "assets/icon.ico",
+      "installerHeaderIcon": "assets/icon.ico",
+      "deleteAppDataOnUninstall": false,
+      "runAfterFinish": true
+    },
+    "portable": {
+      "artifactName": "${productName}-${version}-portable.exe"
+    },
+    "linux": {
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "category": "Office"
+    },
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ],
+      "category": "public.app-category.business"
+    }
+  }
+}
