@@ -85,14 +85,12 @@ export const productInsertSchema = createInsertSchema(products);
 export const invoiceInsertSchema = createInsertSchema(invoices);
 export const invoiceItemInsertSchema = createInsertSchema(invoiceItems);
 export const expenseInsertSchema = createInsertSchema(expenses).omit({ 
-  reference: true,
   id: true,
   createdAt: true,
   approvedBy: true,
   approvedAt: true 
 });
 export const revenueInsertSchema = createInsertSchema(revenues).omit({ 
-  reference: true,
   id: true,
   createdAt: true 
 });
@@ -104,8 +102,6 @@ export const insertBusinessAlertSchema = createInsertSchema(businessAlerts);
 export const insertCashBookEntrySchema = createInsertSchema(cashBookEntries);
 export const insertPettyCashEntrySchema = createInsertSchema(pettyCashEntries);
 export const insertImprestFundSchema = createInsertSchema(imprestFunds).omit({ 
-  reference: true,
-  currentBalance: true,
   id: true,
   createdAt: true,
   updatedAt: true 
