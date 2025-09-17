@@ -108,8 +108,10 @@ export default function AuthPage() {
         description: `Bienvenue ${user.firstName} !`,
       });
       
-      // Attendre que les données utilisateur soient mises à jour avant la redirection
-      await queryClient.refetchQueries({ queryKey: ["/api/user"] });
+      // Mettre à jour directement le cache utilisateur avec les données retournées
+      queryClient.setQueryData(["/api/user"], user);
+      
+      // Redirection vers le tableau de bord
       setLocation("/");
     },
     onError: (error: any) => {
@@ -169,7 +171,8 @@ export default function AuthPage() {
         title: "Compte créé avec succès !",
         description: `Bienvenue ${user.firstName} ! Vous pouvez maintenant compléter votre profil.`,
       });
-      queryClient.invalidateQueries({ queryKey: ["/api/user"] });
+      // Mettre à jour directement le cache utilisateur avec les données retournées
+      queryClient.setQueryData(["/api/user"], user);
       setLocation("/complete-profile");
     },
     onError: (error: any) => {

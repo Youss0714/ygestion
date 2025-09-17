@@ -212,11 +212,19 @@ export function setupAuth(app: Express) {
           // Continue registration even if license association fails
         }
         
-        res.status(201).json({
-          id: newUser.id,
-          email: newUser.email,
-          firstName: newUser.firstName,
-          lastName: newUser.lastName,
+        // Forcer la sauvegarde de la session avant de répondre
+        req.session.save((err) => {
+          if (err) {
+            console.error("Error saving session:", err);
+            return res.status(500).json({ message: "Erreur de session" });
+          }
+          
+          res.status(201).json({
+            id: newUser.id,
+            email: newUser.email,
+            firstName: newUser.firstName,
+            lastName: newUser.lastName,
+          });
         });
       });
     } catch (error) {
@@ -254,11 +262,19 @@ export function setupAuth(app: Express) {
           // Continue login even if license association fails
         }
         
-        res.json({
-          id: user.id,
-          email: user.email,
-          firstName: user.firstName,
-          lastName: user.lastName,
+        // Forcer la sauvegarde de la session avant de répondre
+        req.session.save((err) => {
+          if (err) {
+            console.error("Error saving session:", err);
+            return res.status(500).json({ message: "Erreur de session" });
+          }
+          
+          res.json({
+            id: user.id,
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+          });
         });
       });
     })(req, res, next);
