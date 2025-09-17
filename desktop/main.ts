@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, Menu } from 'electron';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { createRequire } from 'module';
@@ -226,8 +226,12 @@ const createWindow = async (): Promise<void> => {
     },
     show: false,
     titleBarStyle: 'default',
-    title: 'YGestion - Gestion Commerciale et Comptable'
+    title: 'YGestion - Gestion Commerciale et Comptable',
+    autoHideMenuBar: true // Hide menu bar (File, Edit, View, Window, Help)
   });
+
+  // Remove application menu completely
+  Menu.setApplicationMenu(null);
 
   // Load the app
   const appUrl = `http://localhost:${PORT}`;
